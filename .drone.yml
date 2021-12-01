@@ -8,12 +8,6 @@ steps:
       repository: docker.murbal.me
       repo: docker.murbal.me/url-shortener/api
       dockerfile: ./docker/api/Dockerfile
-      KEYDB_PASSWORD:
-        from_secret: keydb_password
-      KEYDB_HOST:
-        from_secret: keydb_host
-      KEYDB_PORT:
-        from_secret: keydb_port
   - name: build-web
     image: plugins/docker
     settings:
@@ -34,5 +28,31 @@ steps:
       repository: docker.murbal.me
       repo: docker.murbal.me/url-shortener/keydb
       dockerfile: ./docker/keydb/Dockerfile
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: murbal.me
+      username: root
+      password:
+        from_secret: ssh_root_password
+      DOCKER_REGISTRY_USER_NAME:
+        from_secret: docker_registry_user_name
+      DOCKER_REGISTRY_PASSWORD:
+        from_secret: docker_registry_password
       KEYDB_PASSWORD:
         from_secret: keydb_password
+      KEYDB_PASSWORD:
+        from_secret: keydb_password
+      KEYDB_HOST:
+        from_secret: keydb_host
+      KEYDB_PORT:
+        from_secret: keydb_port
+      script:
+        - docker network create url-shortener
+        - echo "${DOCKER_REGISTRY_PASSWORD}" | docker login docker.murbal.me --username ${DOCKER_REGISTRY_USER_NAME} --password-stdin
+        - docker pull docker.murbal.me/url-shortener/api
+        - docker pull docker.murbal.me/url-shortener/web
+        - docker pull docker.murbal.me/url-shortener/keydb
+        - docker run -d --network url-shortener --name url-shortener-keydb -e KEYDB_PASSWORD url-shortener/keydb
+        - docker run -d --network url-shortener --name url-shortener-api -e KEYDB_PASSWORD -e KEYDB_HOST -e KEYDB_PORT -p 127.0.0.1:4000:8101 url-shortener/api
+        - docker run -d --network url-shortener --name url-shortener-web -p 127.0.0.1:80:8100 url-shortener/web
