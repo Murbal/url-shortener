@@ -5,15 +5,23 @@ steps:
   - name: build-api
     image: plugins/docker
     settings:
-      repository: docker.murbal.me
       repo: docker.murbal.me/url-shortener/api
+      registry: docker.murbal.me
       dockerfile: ./docker/api/Dockerfile
+      username:
+        from_secret: docker_registry_user_name
+      password:
+        from_secret: docker_registry_password
   - name: build-web
     image: plugins/docker
     settings:
-      repository: docker.murbal.me
       repo: docker.murbal.me/url-shortener/web
+      registry: docker.murbal.me
       dockerfile: ./docker/web/Dockerfile
+      username:
+        from_secret: docker_registry_user_name
+      password:
+        from_secret: docker_registry_password
       SERVER_PORT:
         from_secret: server_port
       API_SERVER_PORT:
@@ -25,9 +33,13 @@ steps:
   - name: build-keydb
     image: plugins/docker
     settings:
-      repository: docker.murbal.me
       repo: docker.murbal.me/url-shortener/keydb
+      registry: docker.murbal.me
       dockerfile: ./docker/keydb/Dockerfile
+      username:
+        from_secret: docker_registry_user_name
+      password:
+        from_secret: docker_registry_password
   - name: deploy
     image: appleboy/drone-ssh
     settings:
