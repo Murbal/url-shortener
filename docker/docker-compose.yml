@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  api:
+    image: node:16-slim
+    environment:
+      - KEYDB_PASSWORD
+      - KEYDB_HOST
+      - KEYDB_PORT
+    volumes:
+      - ../api:/code
+      - ../docker/install-pnpm:/scripts/install-pnpm
+      - ../docker/pnpm-v6.16.js:/scripts/pnpm-v6.16.js
+    working_dir: /code
+    ports:
+      - "4000:4000"
+      - "9229:9229"
+    command: sh -c "../scripts/install-pnpm && pnpm install && pnpm start:debug"
+
+  client:
+    image: node:16-slim
+    volumes:
+      - ../client:/code
+      - ../docker/install-pnpm:/scripts/install-pnpm
+      - ../docker/pnpm-v6.16.js:/scripts/pnpm-v6.16.js
+    working_dir: /code
+    ports:
+      - "3000:3000"
+    command: sh -c "../scripts/install-pnpm && pnpm install && pnpm dev"
+
+  keydb:
+    image: eqalpha/keydb:alpine_x86_64_v6.2.1
+    environment:
+      - KEYDB_PASSWORD
+    ports:
+      - "6379:6379"
+    command: keydb-server --requirepass $KEYDB_PASSWORD --appendonly yes

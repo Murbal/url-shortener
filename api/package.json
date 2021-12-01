@@ -1,0 +1,36 @@
+{
+  "scripts": {
+    "start:debug": "tsc-watch --noClear --onSuccess 'node --inspect=0.0.0.0:9229 dist'",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.2.0",
+    "@types/http-errors": "^1.8.1",
+    "@types/ioredis": "^4.28.1",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.9",
+    "@types/prettier": "^2.4.2",
+    "@types/validator": "^13.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
+    "jest": "^27.3.1",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
+    "tsc-watch": "^4.5.0",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.21.2",
+    "cuid": "^2.1.8",
+    "fastify": "^3.24.0",
+    "fastify-rate-limit": "^5.6.2",
+    "http-errors": "^1.8.1",
+    "ioredis": "^4.28.1",
+    "validator": "^13.7.0"
+  }
+}

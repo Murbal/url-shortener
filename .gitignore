@@ -1,0 +1,11 @@
+dist
+build
+
+node_modules
+*.log
+.pnpm-store
+.pnpm-debug.log*
+
+*.tsbuildinfo
+
+.env
