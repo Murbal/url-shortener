@@ -1,0 +1,38 @@
+kind: pipeline
+name: url-shortener
+
+steps:
+  - name: build-api
+    image: plugins/docker
+    settings:
+      repository: docker.murbal.me
+      repo: docker.murbal.me/url-shortener/api
+      dockerfile: ./docker/api/Dockerfile
+      KEYDB_PASSWORD:
+        from_secret: keydb_password
+      KEYDB_HOST:
+        from_secret: keydb_host
+      KEYDB_PORT:
+        from_secret: keydb_port
+  - name: build-web
+    image: plugins/docker
+    settings:
+      repository: docker.murbal.me
+      repo: docker.murbal.me/url-shortener/web
+      dockerfile: ./docker/web/Dockerfile
+      SERVER_PORT:
+        from_secret: server_port
+      API_SERVER_PORT:
+        from_secret: api_server_port
+      API_SERVICE_HOST:
+        from_secret: api_service_host
+      API_SERVICE_PORT:
+        from_secret: api_service_port
+  - name: build-keydb
+    image: plugins/docker
+    settings:
+      repository: docker.murbal.me
+      repo: docker.murbal.me/url-shortener/keydb
+      dockerfile: ./docker/keydb/Dockerfile
+      KEYDB_PASSWORD:
+        from_secret: keydb_password
