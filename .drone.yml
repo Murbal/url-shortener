@@ -19,17 +19,17 @@ steps:
       registry: docker.murbal.me
       dockerfile: ./docker/web/Dockerfile
       username:
-        from_secret: docker_registry_user_name
+        from_secret: DOCKER_REGISTRY_USER_NAME
       password:
-        from_secret: docker_registry_password
+        from_secret: DOCKER_REGISTRY_PASSWORD
       SERVER_PORT:
-        from_secret: server_port
+        from_secret: SERVER_PORT
       API_SERVER_PORT:
-        from_secret: api_server_port
+        from_secret: API_SERVER_PORT
       API_SERVICE_HOST:
-        from_secret: api_service_host
+        from_secret: API_SERVICE_HOST
       API_SERVICE_PORT:
-        from_secret: api_service_port
+        from_secret: API_SERVICE_PORT
   - name: build-keydb
     image: plugins/docker
     settings:
@@ -37,28 +37,26 @@ steps:
       registry: docker.murbal.me
       dockerfile: ./docker/keydb/Dockerfile
       username:
-        from_secret: docker_registry_user_name
+        from_secret: DOCKER_REGISTRY_USER_NAME
       password:
-        from_secret: docker_registry_password
+        from_secret: DOCKER_REGISTRY_PASSWORD
   - name: deploy
     image: appleboy/drone-ssh
     settings:
       host: murbal.me
       username: root
       password:
-        from_secret: ssh_root_password
+        from_secret: SSH_ROOT_PASSWORD
       DOCKER_REGISTRY_USER_NAME:
-        from_secret: docker_registry_user_name
+        from_secret: DOCKER_REGISTRY_USER_NAME
       DOCKER_REGISTRY_PASSWORD:
-        from_secret: docker_registry_password
+        from_secret: DOCKER_REGISTRY_PASSWORD
       KEYDB_PASSWORD:
-        from_secret: keydb_password
-      KEYDB_PASSWORD:
-        from_secret: keydb_password
+        from_secret: KEYDB_PASSWORD
       KEYDB_HOST:
-        from_secret: keydb_host
+        from_secret: KEYDB_HOST
       KEYDB_PORT:
-        from_secret: keydb_port
+        from_secret: KEYDB_PORT
       script:
         - docker network create url-shortener
         - echo "${DOCKER_REGISTRY_PASSWORD}" | docker login docker.murbal.me --username ${DOCKER_REGISTRY_USER_NAME} --password-stdin
