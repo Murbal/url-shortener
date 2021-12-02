@@ -4,7 +4,6 @@ import { SubmitHandler } from 'react-hook-form';
 import { AppForm } from '../components/Form';
 import { AppTextField } from '../components/Form/TextField';
 import { useApiAxios } from '../hooks/useAxios';
-import { checkIsUrl } from '../util/check';
 
 type FormValues = {
   url: string;
@@ -50,12 +49,6 @@ export const CreateShortUrl: FC = () => {
           disabled={loading}
           registerOptions={{
             required: { value: true, message: 'Required' },
-            validate: (maybeUrl) =>
-              maybeUrl
-                ? checkIsUrl(maybeUrl)
-                  ? undefined
-                  : 'Invalid URL'
-                : undefined,
           }}
         />
       </AppForm>
