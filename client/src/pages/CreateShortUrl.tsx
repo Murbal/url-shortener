@@ -24,7 +24,7 @@ export const CreateShortUrl: FC = () => {
   const isUrlError = errorData?.message.toLowerCase().includes('url');
 
   const shortLink = data
-    ? `${import.meta.env.VITE_SHORT_LINK_HOST}/${data.token}`
+    ? `${import.meta.env.VITE_SHORT_LINK_DOMAIN}/${data.token}`
     : undefined;
 
   const handleSubmit = useCallback<SubmitHandler<FormValues>>(

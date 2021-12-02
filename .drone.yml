@@ -23,6 +23,8 @@ steps:
         from_secret: API_SERVICE_HOST
       API_SERVICE_PORT:
         from_secret: API_SERVICE_PORT
+      VITE_SHORT_LINK_DOMAIN:
+        from_secret: SHORT_LINK_DOMAIN
     settings:
       repo: docker.murbal.me/url-shortener/web
       registry: docker.murbal.me
@@ -31,6 +33,12 @@ steps:
         from_secret: DOCKER_REGISTRY_USER_NAME
       password:
         from_secret: DOCKER_REGISTRY_PASSWORD
+      build_args_from_env:
+        - SERVER_PORT
+        - API_SERVER_PORT
+        - API_SERVICE_HOST
+        - API_SERVICE_PORT
+        - VITE_SHORT_LINK_DOMAIN
   - name: build-keydb
     image: plugins/docker
     settings:

@@ -1,5 +1,5 @@
 server {
-    listen ${SERVER_PORT};
+    listen $SERVER_PORT;
     server_name localhost;
     root   /usr/share/nginx/html;
 
@@ -8,15 +8,15 @@ server {
     }
 
     location /api/ {
-        proxy_pass  http://${API_SERVICE_HOST}:${API_SERVICE_PORT}/;
+        proxy_pass  http://$API_SERVICE_HOST:$API_SERVICE_PORT/;
     }
 }
 
 server {
-    listen ${API_SERVER_PORT};
+    listen $API_SERVER_PORT;
     server_name localhost;
     
     location / {
-        proxy_pass http://${API_SERVICE_HOST}:${API_SERVICE_PORT}/;
+        proxy_pass http://$API_SERVICE_HOST:$API_SERVICE_PORT/;
     }
 }
