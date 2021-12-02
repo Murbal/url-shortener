@@ -29,7 +29,11 @@ export const CreateShortUrl: FC = () => {
   const handleSubmit = useCallback<SubmitHandler<FormValues>>(
     async (values) => {
       try {
-        await createShortUrl({ data: values });
+        const protocolMatch = values.url.match(/^https?:\/\//);
+        const normalizedUrl = protocolMatch
+          ? values.url
+          : `https://${values.url}`;
+        await createShortUrl({ data: { url: normalizedUrl } });
       } catch {
         // skip
       }
