@@ -81,7 +81,6 @@ steps:
         - export KEYDB_PASSWORD=$KEYDB_PASSWORD
         - export KEYDB_HOST=$KEYDB_HOST
         - export KEYDB_PORT=$KEYDB_PORT
-        - docker network create url-shortener
         - docker login docker.murbal.me --username $${DOCKER_REGISTRY_USER_NAME} --password $${DOCKER_REGISTRY_PASSWORD}
         - docker pull docker.murbal.me/url-shortener/api
         - docker pull docker.murbal.me/url-shortener/web
@@ -92,6 +91,6 @@ steps:
         - docker rm url-shortener-api
         - docker stop url-shortener-web
         - docker rm url-shortener-web
-        - docker run -d --network url-shortener --name url-shortener-keydb -e "KEYDB_PASSWORD=$${KEYDB_PASSWORD}" docker.murbal.me/url-shortener/keydb
+        - docker run -d --network url-shortener --name url-shortener-keydb -e "KEYDB_PASSWORD=$${KEYDB_PASSWORD}" --volume url-shortener-keydb-data:/data docker.murbal.me/url-shortener/keydb
         - docker run -d --network url-shortener --name url-shortener-api -e "KEYDB_PASSWORD=$${KEYDB_PASSWORD}" -e "KEYDB_HOST=$${KEYDB_HOST}" -e "KEYDB_PORT=$${KEYDB_PORT}" -p 127.0.0.1:8101:4000 docker.murbal.me/url-shortener/api
         - docker run -d --network url-shortener --name url-shortener-web -p 127.0.0.1:8100:80 docker.murbal.me/url-shortener/web
